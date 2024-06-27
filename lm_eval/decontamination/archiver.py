@@ -149,7 +149,7 @@ class TextReader:
     def read_slow(self):
         with open(self.file_path, "r", encoding="utf8") as fh:
             while True:
-                line = fh.readline()
+                line = fh.readline(5_000_000)
                 if line == -1 or line == "":
                     break
                 else:
