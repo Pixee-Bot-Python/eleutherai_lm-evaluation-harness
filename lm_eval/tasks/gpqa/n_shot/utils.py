@@ -1,7 +1,7 @@
-import random
 import re
 
 import datasets
+import secrets
 
 
 def preprocess(text):
@@ -14,7 +14,7 @@ def preprocess(text):
     return text
 
 
-rng = random.Random(42)
+rng = secrets.SystemRandom().Random(42)
 
 
 def process_docs(dataset: datasets.Dataset) -> datasets.Dataset:

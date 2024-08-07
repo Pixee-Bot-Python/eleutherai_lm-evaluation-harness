@@ -15,11 +15,11 @@
 """Utility library of instructions."""
 
 import functools
-import random
 import re
 
 import immutabledict
 import nltk
+import secrets
 
 
 def download_nltk_resources():
@@ -1679,4 +1679,4 @@ def count_sentences(text):
 
 def generate_keywords(num_keywords):
     """Randomly generates a few keywords."""
-    return random.sample(WORD_LIST, k=num_keywords)
+    return secrets.SystemRandom().sample(WORD_LIST, k=num_keywords)

@@ -1,9 +1,9 @@
-import random
+import secrets
 
 
 ### Utils for `ethics_utilitarianism` task below
 def _preproc_doc(doc):
-    rnd = random.Random(doc["activity"])
+    rnd = secrets.SystemRandom().Random(doc["activity"])
     scenarios = [doc["activity"], doc["baseline"]]
     ordering = [0, 1]
     rnd.shuffle(ordering)

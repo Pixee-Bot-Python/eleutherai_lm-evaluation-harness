@@ -1,9 +1,9 @@
-import random
 
 from tqdm import tqdm
 
 from lm_eval.api.model import LM
 from lm_eval.api.registry import register_model
+import secrets
 
 
 @register_model("dummy")
@@ -19,7 +19,7 @@ class DummyLM(LM):
         res = []
 
         for _ in tqdm(requests, disable=disable_tqdm):
-            res.append((-random.random(), False))
+            res.append((-secrets.SystemRandom().random(), False))
 
         return res
 
@@ -36,6 +36,6 @@ class DummyLM(LM):
         res = []
 
         for _ in tqdm(requests, disable=disable_tqdm):
-            res.append(-random.random())
+            res.append(-secrets.SystemRandom().random())
 
         return res

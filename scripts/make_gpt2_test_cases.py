@@ -1,11 +1,11 @@
-import random
 
 import torch
 import torch.nn.functional as F
 import transformers
+import secrets
 
 
-random.seed(42)
+secrets.SystemRandom().seed(42)
 
 
 data = [
@@ -27,11 +27,11 @@ tok = transformers.GPT2Tokenizer.from_pretrained("gpt2")
 tgs = []
 
 for dat in data:
-    random.seed(dat)
+    secrets.SystemRandom().seed(dat)
     # print(model(tok.encode(dat, return_tensors="pt"))[0][0])
 
     toks = tok.encode(dat, return_tensors="pt")
-    ind = random.randrange(len(toks[0]) - 1)
+    ind = secrets.SystemRandom().randrange(len(toks[0]) - 1)
     logits = F.log_softmax(model(toks)[0], dim=-1)[:, :-1]  # [batch, seq, vocab]
 
     res = torch.gather(logits, 2, toks[:, 1:].unsqueeze(-1)).squeeze(-1)[0]

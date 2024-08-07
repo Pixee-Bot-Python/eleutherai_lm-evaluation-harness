@@ -17,7 +17,6 @@
 import collections
 import json
 import logging
-import random
 import re
 import string
 from typing import Dict, Optional, Sequence, Union
@@ -25,6 +24,7 @@ from typing import Dict, Optional, Sequence, Union
 import langdetect
 
 from lm_eval.tasks.ifeval import instructions_util
+import secrets
 
 
 logger = logging.getLogger(__name__)
@@ -144,7 +144,7 @@ class ResponseLanguageChecker(Instruction):
         """
         self._language = language
         if self._language is None:
-            self._language = random.choice(list(_LANGUAGES.keys()))
+            self._language = secrets.choice(list(_LANGUAGES.keys()))
         # TODO(tianjianlu): opens the description generation to more choices.
         self._description_pattern = (
             "Your ENTIRE response should be in {language} language, no other "
@@ -202,10 +202,10 @@ class NumberOfSentences(Instruction):
         # The number of sentences as a threshold for comparison.
         self._num_sentences_threshold = num_sentences
         if self._num_sentences_threshold is None or self._num_sentences_threshold < 0:
-            self._num_sentences_threshold = random.randint(1, _MAX_NUM_SENTENCES)
+            self._num_sentences_threshold = secrets.SystemRandom().randint(1, _MAX_NUM_SENTENCES)
 
         if relation is None:
-            self._comparison_relation = random.choice(_COMPARISON_RELATION)
+            self._comparison_relation = secrets.choice(_COMPARISON_RELATION)
         elif relation not in _COMPARISON_RELATION:
             raise ValueError(
                 "The supported relation for comparison must be in "
@@ -268,7 +268,7 @@ class PlaceholderChecker(Instruction):
         """
         self._num_placeholders = num_placeholders
         if self._num_placeholders is None or self._num_placeholders < 0:
-            self._num_placeholders = random.randint(1, _NUM_PLACEHOLDERS)
+            self._num_placeholders = secrets.SystemRandom().randint(1, _NUM_PLACEHOLDERS)
         self._description_pattern = (
             "The response must contain at least {num_placeholders} placeholders "
             + "represented by square brackets, such as [address]."
@@ -313,7 +313,7 @@ class BulletListChecker(Instruction):
         """
         self._num_bullets = num_bullets
         if self._num_bullets is None or self._num_bullets < 0:
-            self._num_bullets = random.randint(1, _NUM_BULLETS)
+            self._num_bullets = secrets.SystemRandom().randint(1, _NUM_BULLETS)
         self._description_pattern = (
             "Your answer must contain exactly {num_bullets} bullet points. "
             + "Use the markdown bullet points such as:\n"
@@ -401,7 +401,7 @@ class ConstrainedStartChecker(Instruction):
         """
         self._starter = starter.strip() if isinstance(starter, str) else starter
         if self._starter is None:
-            self._starter = random.choice(_STARTER_OPTIONS)
+            self._starter = secrets.choice(_STARTER_OPTIONS)
         self._description_pattern = (
             "During the conversation, when it is your turn, "
             + "please always start with {starter}"
@@ -448,7 +448,7 @@ class HighlightSectionChecker(Instruction):
         """
         self._num_highlights = num_highlights
         if self._num_highlights is None or self._num_highlights < 0:
-            self._num_highlights = random.randint(1, _NUM_HIGHLIGHTED_SECTIONS)
+            self._num_highlights = secrets.SystemRandom().randint(1, _NUM_HIGHLIGHTED_SECTIONS)
 
         self._description_pattern = (
             "Highlight at least {num_highlights} sections in your answer with "
@@ -509,11 +509,11 @@ class SectionChecker(Instruction):
             else section_spliter
         )
         if self._section_spliter is None:
-            self._section_spliter = random.choice(_SECTION_SPLITER)
+            self._section_spliter = secrets.choice(_SECTION_SPLITER)
 
         self._num_sections = num_sections
         if self._num_sections is None or self._num_sections < 0:
-            self._num_sections = random.randint(1, _NUM_SECTIONS)
+            self._num_sections = secrets.SystemRandom().randint(1, _NUM_SECTIONS)
 
         self._description_pattern = (
             "Your response must have {num_sections} sections. Mark the beginning "
@@ -572,7 +572,7 @@ class ParagraphChecker(Instruction):
         """
         self._num_paragraphs = num_paragraphs
         if self._num_paragraphs is None or self._num_paragraphs < 0:
-            self._num_paragraphs = random.randint(1, _NUM_PARAGRAPHS)
+            self._num_paragraphs = secrets.SystemRandom().randint(1, _NUM_PARAGRAPHS)
 
         self._description_pattern = (
             "There should be {num_paragraphs} paragraphs. "
@@ -632,7 +632,7 @@ class PostscriptChecker(Instruction):
             else postscript_marker
         )
         if self._postscript_marker is None:
-            self._postscript_marker = random.choice(_POSTSCRIPT_MARKER)
+            self._postscript_marker = secrets.choice(_POSTSCRIPT_MARKER)
 
         self._description_pattern = (
             "At the end of your response, please explicitly add a postscript "
@@ -807,10 +807,10 @@ class KeywordFrequencyChecker(Instruction):
 
         self._frequency = frequency
         if self._frequency is None or self._frequency < 0:
-            self._frequency = random.randint(1, _KEYWORD_FREQUENCY)
+            self._frequency = secrets.SystemRandom().randint(1, _KEYWORD_FREQUENCY)
 
         if relation is None:
-            self._comparison_relation = random.choice(_COMPARISON_RELATION)
+            self._comparison_relation = secrets.choice(_COMPARISON_RELATION)
         elif relation not in _COMPARISON_RELATION:
             raise ValueError(
                 "The supported relation for comparison must be in "
@@ -873,12 +873,11 @@ class NumberOfWords(Instruction):
 
         self._num_words = num_words
         if self._num_words is None or self._num_words < 0:
-            self._num_words = random.randint(
-                _NUM_WORDS_LOWER_LIMIT, _NUM_WORDS_UPPER_LIMIT
+            self._num_words = secrets.SystemRandom().randint(_NUM_WORDS_LOWER_LIMIT, _NUM_WORDS_UPPER_LIMIT
             )
 
         if relation is None:
-            self._comparison_relation = random.choice(_COMPARISON_RELATION)
+            self._comparison_relation = secrets.choice(_COMPARISON_RELATION)
         elif relation not in _COMPARISON_RELATION:
             raise ValueError(
                 "The supported relation for comparison must be in "
@@ -967,7 +966,7 @@ class ParagraphFirstWordCheck(Instruction):
         """
         self._num_paragraphs = num_paragraphs
         if self._num_paragraphs is None or self._num_paragraphs < 0:
-            self._num_paragraphs = random.randint(1, _NUM_PARAGRAPHS)
+            self._num_paragraphs = secrets.SystemRandom().randint(1, _NUM_PARAGRAPHS)
 
         self._nth_paragraph = nth_paragraph
         if (
@@ -975,7 +974,7 @@ class ParagraphFirstWordCheck(Instruction):
             or self._nth_paragraph <= 0
             or self._nth_paragraph > self._num_paragraphs
         ):
-            self._nth_paragraph = random.randint(1, self._num_paragraphs + 1)
+            self._nth_paragraph = secrets.SystemRandom().randint(1, self._num_paragraphs + 1)
 
         self._first_word = first_word
         if self._first_word is None:
@@ -1076,7 +1075,7 @@ class KeySentenceChecker(Instruction):
             self._key_sentences = key_sentences
 
         if not num_sentences:
-            self._num_sentences = random.randint(1, len(self._key_sentences))
+            self._num_sentences = secrets.SystemRandom().randint(1, len(self._key_sentences))
         else:
             self._num_sentences = num_sentences
 
@@ -1308,7 +1307,7 @@ class EndChecker(Instruction):
             end_phrase.strip() if isinstance(end_phrase, str) else end_phrase
         )
         if self._end_phrase is None:
-            self._end_phrase = random.choice(_ENDING_OPTIONS)
+            self._end_phrase = secrets.choice(_ENDING_OPTIONS)
         self._description_pattern = (
             "Finish your response with this exact phrase {ender}. "
             "No other words should follow this phrase."
@@ -1384,17 +1383,17 @@ class LetterFrequencyChecker(Instruction):
             or ord(letter.lower()) < 97
             or ord(letter.lower()) > 122
         ):
-            self._letter = random.choice(list(string.ascii_letters))
+            self._letter = secrets.choice(list(string.ascii_letters))
         else:
             self._letter = letter.strip()
         self._letter = self._letter.lower()
 
         self._frequency = let_frequency
         if self._frequency is None or self._frequency < 0:
-            self._frequency = random.randint(1, _LETTER_FREQUENCY)
+            self._frequency = secrets.SystemRandom().randint(1, _LETTER_FREQUENCY)
 
         if let_relation is None:
-            self._comparison_relation = random.choice(_COMPARISON_RELATION)
+            self._comparison_relation = secrets.choice(_COMPARISON_RELATION)
         elif let_relation not in _COMPARISON_RELATION:
             raise ValueError(
                 "The supported relation for comparison must be in "
@@ -1543,11 +1542,11 @@ class CapitalWordFrequencyChecker(Instruction):
         """
         self._frequency = capital_frequency
         if self._frequency is None:
-            self._frequency = random.randint(1, _ALL_CAPITAL_WORD_FREQUENCY)
+            self._frequency = secrets.SystemRandom().randint(1, _ALL_CAPITAL_WORD_FREQUENCY)
 
         self._comparison_relation = capital_relation
         if capital_relation is None:
-            self._comparison_relation = random.choice(_COMPARISON_RELATION)
+            self._comparison_relation = secrets.choice(_COMPARISON_RELATION)
         elif capital_relation not in _COMPARISON_RELATION:
             raise ValueError(
                 "The supported relation for comparison must be in "
