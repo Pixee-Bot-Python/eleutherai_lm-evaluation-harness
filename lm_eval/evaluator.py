@@ -1,7 +1,6 @@
 import itertools
 import json
 import logging
-import random
 import time
 from collections import defaultdict
 from typing import TYPE_CHECKING, List, Optional, Union
@@ -31,6 +30,7 @@ from lm_eval.utils import (
     positional_deprecated,
     simple_parse_args_string,
 )
+import secrets
 
 
 if TYPE_CHECKING:
@@ -138,7 +138,7 @@ def simple_evaluate(
     if random_seed is not None:
         # See https://github.com/EleutherAI/lm-evaluation-harness/pull/1412
         seed_message.append(f"Setting random seed to {random_seed}")
-        random.seed(random_seed)
+        secrets.SystemRandom().seed(random_seed)
 
     if numpy_random_seed is not None:
         seed_message.append(f"Setting numpy seed to {numpy_random_seed}")
