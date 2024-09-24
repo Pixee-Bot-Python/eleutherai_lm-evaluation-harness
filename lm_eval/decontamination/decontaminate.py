@@ -8,6 +8,7 @@ import time
 
 from .archiver import ZStdTextReader
 from .janitor import Janitor, word_ngrams
+import fickling
 
 
 # Was used for testing the evaluator decoupled from the full logic below
@@ -63,7 +64,7 @@ def get_train_overlap(docs_by_task_set: dict, ngrams_path: str, limit: int) -> d
             task_name, task_set, ngrams_n_size, limit
         )
         if os.path.exists(overlaps_dump_path):
-            duplicates[(task_name, task_set)] = pickle.load(
+            duplicates[(task_name, task_set)] = fickling.load(
                 open(overlaps_dump_path, "rb")
             )
             sets_to_decontaminate -= 1
@@ -77,7 +78,7 @@ def get_train_overlap(docs_by_task_set: dict, ngrams_path: str, limit: int) -> d
         )
         if os.path.exists(task_set_lookup_path):
             print(f"{task_set_lookup_path} available, loading...")
-            lookups[(task_name, task_set)] = pickle.load(
+            lookups[(task_name, task_set)] = fickling.load(
                 open(task_set_lookup_path, "rb")
             )
         else:
