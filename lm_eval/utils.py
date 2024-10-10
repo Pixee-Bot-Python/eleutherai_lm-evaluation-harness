@@ -469,7 +469,7 @@ def regex_replace(string, pattern, repl, count: int = 0):
     return re.sub(pattern, repl, string, count=count)
 
 
-env = Environment(loader=BaseLoader, undefined=StrictUndefined)
+env = Environment(loader=BaseLoader, undefined=StrictUndefined, autoescape=True)
 env.filters["regex_replace"] = regex_replace
 
 
