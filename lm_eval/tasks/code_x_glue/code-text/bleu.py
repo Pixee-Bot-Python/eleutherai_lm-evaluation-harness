@@ -184,22 +184,22 @@ def splitPuncts(line):
 def computeMaps(predictions, goldfile):
     predictionMap: Dict[str, list] = {}
     goldMap: Dict[str, list] = {}
-    gf = open(goldfile, "r", encoding="utf-8")
+    with open(goldfile, "r", encoding="utf-8") as gf:
 
-    for row in predictions:
-        cols = row.strip().split("\t")
-        if len(cols) == 1:
-            (rid, pred) = (cols[0], "")
-        else:
-            (rid, pred) = (cols[0], cols[1])
-        predictionMap[rid] = [splitPuncts(pred.strip().lower())]
+        for row in predictions:
+            cols = row.strip().split("\t")
+            if len(cols) == 1:
+                (rid, pred) = (cols[0], "")
+            else:
+                (rid, pred) = (cols[0], cols[1])
+            predictionMap[rid] = [splitPuncts(pred.strip().lower())]
 
-    for row in gf:
-        (rid, pred) = row.split("\t")
-        if rid in predictionMap:  # Only insert if the id exists for the method
-            if rid not in goldMap:
-                goldMap[rid] = []
-            goldMap[rid].append(splitPuncts(pred.strip().lower()))
+        for row in gf:
+            (rid, pred) = row.split("\t")
+            if rid in predictionMap:  # Only insert if the id exists for the method
+                if rid not in goldMap:
+                    goldMap[rid] = []
+                goldMap[rid].append(splitPuncts(pred.strip().lower()))
 
     sys.stderr.write("Total: " + str(len(goldMap)) + "\n")
     return (goldMap, predictionMap)
