@@ -1,6 +1,5 @@
 import logging
 import math
-import random
 from collections.abc import Iterable
 from typing import List
 
@@ -10,6 +9,7 @@ import sacrebleu
 import sklearn.metrics
 
 from lm_eval.api.registry import register_aggregation, register_metric
+import secrets
 
 
 eval_logger = logging.getLogger("lm-eval")
@@ -392,7 +392,7 @@ class _bootstrap_internal:
 
     def __call__(self, v):
         i, xs = v
-        rnd = random.Random()
+        rnd = secrets.SystemRandom().Random()
         rnd.seed(i)
         res = []
         for _ in range(self.n):

@@ -3,18 +3,18 @@ import glob
 import json
 import os
 import pickle
-import random
 import time
 
 from .archiver import ZStdTextReader
 from .janitor import Janitor, word_ngrams
+import secrets
 
 
 # Was used for testing the evaluator decoupled from the full logic below
 def get_train_overlap_stub(docs: dict, ngrams_path: str, ngrams_n_size: str):
     simulated_overlap = 0.1
     contaminated = int(len(docs) * simulated_overlap)
-    return random.sample(range(len(docs)), contaminated)
+    return secrets.SystemRandom().sample(range(len(docs)), contaminated)
 
 
 # Returns a dictionary containing all overlapping documents in each
