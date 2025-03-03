@@ -7,11 +7,11 @@ import os
 import re
 
 import datasets
-import requests
 import yaml
 from tqdm import tqdm
 
 from lm_eval import utils
+from security import safe_requests
 
 
 def parse_args():
@@ -37,7 +37,7 @@ if __name__ == "__main__":
 
     dataset_path = "lukaemon/bbh"
     for task in tqdm(datasets.get_dataset_infos(dataset_path).keys()):
-        resp = requests.get(
+        resp = safe_requests.get(
             f"https://raw.githubusercontent.com/suzgunmirac/BIG-Bench-Hard/main/cot-prompts/{task}.txt"
         ).content.decode("utf-8")
         prompt = resp.split("\n-----\n")[-1]

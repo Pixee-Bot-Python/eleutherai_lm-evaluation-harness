@@ -1,12 +1,11 @@
 import argparse
 import json
-
-import requests
 import yaml
+from security import safe_requests
 
 
 # get configs from huggingface datasets server by doing a request
-response = requests.get(
+response = safe_requests.get(
     "https://datasets-server.huggingface.co/splits?dataset=HiTZ%2FEusExams", timeout=5
 )
 response_json = json.loads(response.text)
