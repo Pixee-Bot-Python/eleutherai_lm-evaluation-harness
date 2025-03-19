@@ -1,9 +1,9 @@
-import random
 
 import transformers
 
 from lm_eval import evaluator, tasks
 from lm_eval.api.model import LM
+import secrets
 
 
 class DryrunLM(LM):
@@ -20,7 +20,7 @@ class DryrunLM(LM):
         res = []
 
         for ctx, cont in requests:
-            res.append((-random.random(), False))
+            res.append((-secrets.SystemRandom().random(), False))
             self.tokencost += len(self.tokenizer.tokenize(ctx + cont))
 
         return res
