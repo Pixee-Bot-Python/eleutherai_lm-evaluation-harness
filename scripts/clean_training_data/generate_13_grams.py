@@ -36,6 +36,7 @@ from tqdm_multiprocess.logger import setup_logger_tqdm
 
 from lm_eval.decontamination.archiver import Reader, TextArchive
 from lm_eval.decontamination.janitor import Janitor, word_ngrams
+import fickling
 
 
 logger = logging.getLogger(__name__)
@@ -92,7 +93,7 @@ class Buckets:
         self.checkpoint_file = os.path.join(directory, "bucket_offsets.ckpt")
 
         if os.path.exists(self.checkpoint_file):
-            self.bucket_offsets = pickle.load(open(self.checkpoint_file, "rb"))
+            self.bucket_offsets = fickling.load(open(self.checkpoint_file, "rb"))
         else:
             self.bucket_offsets = [0 for i in range(len(self.buckets))]
 
@@ -137,7 +138,7 @@ def do_ngrams_in_buckets(n_value, working_directory, bucket_count):
     # Checkpoint
     checkpoint_file = os.path.join(working_directory, "pile_offset.ckpt")
     if os.path.exists(checkpoint_file):
-        checkpoint_offset = pickle.load(open(checkpoint_file, "rb"))
+        checkpoint_offset = fickling.load(open(checkpoint_file, "rb"))
         iterate = True
     else:
         checkpoint_offset = 0
