@@ -42,7 +42,7 @@ def textsynth_completion(**kwargs):
         on_exception_callback=_exception_callback,
     )
     def completion():
-        return _requests.post(**kwargs)
+        return _requests.post(**kwargs, timeout=60)
 
     return completion()
 
