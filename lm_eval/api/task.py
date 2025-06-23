@@ -39,6 +39,7 @@ from lm_eval.api.registry import (
 from lm_eval.caching.cache import load_from_cache, save_to_cache
 from lm_eval.filters import build_filter_ensemble
 from lm_eval.prompts import get_prompt
+import secrets
 
 
 ALL_OUTPUT_TYPES = [
@@ -656,7 +657,7 @@ class Task(abc.ABC):
         setattr(self._config, "process_results", None)
 
     def set_fewshot_seed(self, seed: Optional[int] = None) -> None:
-        self.fewshot_rnd = random.Random(seed)
+        self.fewshot_rnd = secrets.SystemRandom().Random(seed)
         if hasattr(self, "sampler"):
             self.sampler.rnd = self.fewshot_rnd
 

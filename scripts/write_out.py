@@ -1,12 +1,12 @@
 import argparse
 import os
-import random
 
 import numpy as np
 
 from lm_eval import tasks
 from lm_eval.tasks import TaskManager
 from lm_eval.utils import eval_logger, join_iters
+import secrets
 
 
 EXAMPLE_DIVIDER = "!!@@##@@!! -- Example {i}\n"
@@ -54,7 +54,7 @@ def main():
     for task_name, task in task_dict.items():
         if isinstance(task, tuple):
             _, task = task
-        rnd = random.Random()
+        rnd = secrets.SystemRandom().Random()
         rnd.seed(args.seed)
 
         iters = []
