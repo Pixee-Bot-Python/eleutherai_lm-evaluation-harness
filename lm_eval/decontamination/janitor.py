@@ -3,6 +3,7 @@ import re
 import string
 import traceback
 from typing import Iterator, List, Sequence, Tuple, TypeVar
+import fickling
 
 
 # This is a cpp module. Compile janitor_util.cpp with:
@@ -142,7 +143,7 @@ class Janitor:
 
     def load_contamination_ngrams(self, filename: str) -> None:
         with open(filename, "rb") as fp:
-            self.dirt_ngrams = pickle.load(fp)
+            self.dirt_ngrams = fickling.load(fp)
 
     ##############
     # Call these :)
