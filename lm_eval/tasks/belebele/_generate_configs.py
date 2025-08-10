@@ -39,7 +39,7 @@ if __name__ == "__main__":
             cot_file = json.load(f)
 
     def query():
-        response = requests.get(API_URL)
+        response = requests.get(API_URL, timeout=60)
         return response.json()["splits"]
 
     print(query())

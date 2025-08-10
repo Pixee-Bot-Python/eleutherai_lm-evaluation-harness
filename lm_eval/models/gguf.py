@@ -60,8 +60,8 @@ class GGUFLM(LM):
                 if stop is not None:
                     request["stop"] = stop
                 response = requests.post(
-                    f"{self.base_url}/v1/completions", json=request
-                )
+                    f"{self.base_url}/v1/completions", json=request, 
+                timeout=60)
                 response.raise_for_status()
                 return response.json()
             except RequestException as e:

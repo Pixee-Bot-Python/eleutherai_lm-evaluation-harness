@@ -38,8 +38,8 @@ if __name__ == "__main__":
     dataset_path = "lukaemon/bbh"
     for task in tqdm(datasets.get_dataset_infos(dataset_path).keys()):
         resp = requests.get(
-            f"https://raw.githubusercontent.com/suzgunmirac/BIG-Bench-Hard/main/cot-prompts/{task}.txt"
-        ).content.decode("utf-8")
+            f"https://raw.githubusercontent.com/suzgunmirac/BIG-Bench-Hard/main/cot-prompts/{task}.txt", 
+        timeout=60).content.decode("utf-8")
         prompt = resp.split("\n-----\n")[-1]
         description, *few_shot = prompt.split("\n\n")
 
